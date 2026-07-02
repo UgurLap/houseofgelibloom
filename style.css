@@ -90,3 +90,8 @@ padding:40px;
 background:#fff;
 margin-top:60px;
 }
+.card .button{
+margin-top:15px;
+display:inline-block;
+font-size:14px;
+}
