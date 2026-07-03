@@ -9,7 +9,6 @@ font-family:'Inter', sans-serif;
 background:#f6f2ea;
 color:#111;
 overflow-x:hidden;
-line-height:1.6;
 }
 
 /* NAV */
@@ -19,8 +18,8 @@ top:0;
 width:100%;
 display:flex;
 justify-content:space-between;
-padding:22px 70px;
-background:rgba(255,255,255,0.65);
+padding:20px 70px;
+background:rgba(255,255,255,0.6);
 backdrop-filter:blur(20px);
 z-index:999;
 }
@@ -32,20 +31,19 @@ letter-spacing:5px;
 }
 
 .links a{
-margin-left:30px;
+margin-left:25px;
 text-decoration:none;
 color:#111;
-font-size:13px;
-letter-spacing:2px;
+cursor:pointer;
 }
 
 /* HERO */
 .hero{
 height:100vh;
-position:relative;
 display:flex;
 align-items:center;
 justify-content:center;
+position:relative;
 text-align:center;
 }
 
@@ -75,32 +73,18 @@ font-family:'Cormorant Garamond', serif;
 }
 
 .hero-content p{
-margin-top:20px;
 opacity:0.85;
-font-size:18px;
+margin-top:15px;
 }
 
-/* STRIP */
-.strip{
-padding:20px;
-text-align:center;
-background:#fff;
-font-size:13px;
-letter-spacing:1px;
-}
-
-/* STORY */
-.story{
-display:grid;
-grid-template-columns:1fr 1fr;
-padding:160px 10%;
-gap:100px;
-}
-
-.story-img{
-height:520px;
-background:url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80') center/cover;
-border-radius:20px;
+.btn{
+display:inline-block;
+margin-top:25px;
+padding:14px 40px;
+background:white;
+color:black;
+border-radius:50px;
+text-decoration:none;
 }
 
 /* SHOP */
@@ -114,7 +98,7 @@ font-size:60px;
 font-family:'Cormorant Garamond', serif;
 }
 
-.shop-grid{
+.grid{
 margin-top:60px;
 display:grid;
 grid-template-columns:repeat(3,1fr);
@@ -124,112 +108,79 @@ gap:30px;
 .product{
 background:white;
 border-radius:20px;
-padding:20px;
+overflow:hidden;
 box-shadow:0 30px 70px rgba(0,0,0,0.06);
 transition:.4s;
-cursor:pointer;
 }
 
 .product:hover{
 transform:translateY(-10px);
 }
 
-.img{
-height:220px;
-border-radius:15px;
-margin-bottom:15px;
+.product img{
+width:100%;
+height:250px;
+object-fit:cover;
 }
 
-.img1{background:url('https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?auto=format&fit=crop&w=800&q=80') center/cover;}
-.img2{background:url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80') center/cover;}
-.img3{background:url('https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?auto=format&fit=crop&w=800&q=80') center/cover;}
-
 .product button{
-margin-top:10px;
+margin:15px;
 padding:10px 20px;
 border:none;
 background:#111;
 color:white;
 border-radius:30px;
+cursor:pointer;
 }
 
-/* CTA */
-.cta{
-padding:120px;
-text-align:center;
-background:#111;
-color:white;
+/* STORY */
+.story{
+padding:160px 10%;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:100px;
 }
 
-.cta input{
-padding:14px;
-width:300px;
-border-radius:30px;
-border:none;
-margin-top:20px;
+.story-img{
+height:450px;
+background:url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80') center/cover;
+border-radius:20px;
 }
 
-.cta button{
-padding:14px 25px;
-border-radius:30px;
-border:none;
-background:#c8a96a;
-color:white;
-margin-left:10px;
-}
-
-/* FOOTER */
-.footer{
-padding:100px;
-text-align:center;
-background:#111;
-color:white;
-}
-
-.footer h2{
-font-family:'Cormorant Garamond', serif;
-font-size:50px;
-}
-
-.copy{
-opacity:0.5;
-margin-top:20px;
-}
-
-/* MODAL */
-.modal{
+/* CART */
+.cart{
 display:none;
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.7);
+background:rgba(0,0,0,0.6);
 justify-content:center;
 align-items:center;
 }
 
-.modal-content{
+.cart-box{
 background:white;
 padding:40px;
 border-radius:20px;
-width:400px;
+width:350px;
 text-align:center;
 }
 
-.close{
-position:absolute;
-top:20px;
-right:30px;
-font-size:30px;
-cursor:pointer;
-}
-
-.buy{
+.checkout{
 margin-top:20px;
 padding:12px 25px;
+background:#c8a96a;
+border:none;
+color:white;
+border-radius:30px;
+}
+
+/* FOOTER minimal */
+.footer{
+padding:80px;
+text-align:center;
 background:#111;
 color:white;
-border:none;
-border-radius:30px;
 }
