@@ -101,14 +101,34 @@ transition:0.3s;
 transform:translateY(-5px);
 }
 
-footer{
+.footer{
+background:#fff;
+padding:60px 20px;
 text-align:center;
-padding:40px;
-background:white;
+margin-top:80px;
 }
-.dark{
-background:#F2ECE2;
-padding:100px 20px;
+
+.footer-content h3{
+font-family:'Cormorant Garamond',serif;
+font-size:28px;
+margin-bottom:10px;
+}
+
+.footer-content p{
+max-width:500px;
+margin:0 auto 20px;
+opacity:0.7;
+}
+
+.footer-links a{
+margin:0 10px;
+text-decoration:none;
+color:#333;
+font-size:14px;
+}
+
+.footer-links a:hover{
+opacity:0.6;
 }
 
 .subtitle{
