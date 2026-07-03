@@ -70,7 +70,7 @@ max-width:900px;
 }
 
 .hero-content h1{
-font-size:90px;
+font-size:88px;
 font-family:'Cormorant Garamond', serif;
 }
 
@@ -80,22 +80,13 @@ opacity:0.85;
 font-size:18px;
 }
 
-.btn{
-display:inline-block;
-margin-top:30px;
-padding:16px 40px;
-background:white;
-color:black;
-border-radius:50px;
-text-decoration:none;
-}
-
 /* STRIP */
 .strip{
 padding:20px;
 text-align:center;
 background:#fff;
 font-size:13px;
+letter-spacing:1px;
 }
 
 /* STORY */
@@ -104,20 +95,12 @@ display:grid;
 grid-template-columns:1fr 1fr;
 padding:160px 10%;
 gap:100px;
-align-items:center;
 }
 
 .story-img{
-height:500px;
+height:520px;
 background:url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80') center/cover;
 border-radius:20px;
-}
-
-.text-link{
-display:inline-block;
-margin-top:20px;
-color:#c8a96a;
-text-decoration:none;
 }
 
 /* SHOP */
@@ -144,6 +127,7 @@ border-radius:20px;
 padding:20px;
 box-shadow:0 30px 70px rgba(0,0,0,0.06);
 transition:.4s;
+cursor:pointer;
 }
 
 .product:hover{
@@ -167,56 +151,31 @@ border:none;
 background:#111;
 color:white;
 border-radius:30px;
-cursor:pointer;
-}
-
-/* BANNER */
-.banner{
-padding:120px;
-text-align:center;
-background:#111;
-color:white;
-}
-
-.banner h2{
-font-size:50px;
-font-family:'Cormorant Garamond', serif;
-}
-
-/* CRAFT */
-.craft{
-padding:160px 10%;
-text-align:center;
-}
-
-.craft-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:40px;
-margin-top:60px;
-}
-
-.craft-grid div{
-background:#fff;
-padding:40px;
-border-radius:18px;
 }
 
 /* CTA */
 .cta{
 padding:120px;
 text-align:center;
-background:#c8a96a;
+background:#111;
 color:white;
 }
 
-.cta button{
-margin-top:20px;
-padding:15px 30px;
-border:none;
+.cta input{
+padding:14px;
+width:300px;
 border-radius:30px;
-background:#111;
+border:none;
+margin-top:20px;
+}
+
+.cta button{
+padding:14px 25px;
+border-radius:30px;
+border:none;
+background:#c8a96a;
 color:white;
+margin-left:10px;
 }
 
 /* FOOTER */
@@ -235,4 +194,42 @@ font-size:50px;
 .copy{
 opacity:0.5;
 margin-top:20px;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:white;
+padding:40px;
+border-radius:20px;
+width:400px;
+text-align:center;
+}
+
+.close{
+position:absolute;
+top:20px;
+right:30px;
+font-size:30px;
+cursor:pointer;
+}
+
+.buy{
+margin-top:20px;
+padding:12px 25px;
+background:#111;
+color:white;
+border:none;
+border-radius:30px;
 }
