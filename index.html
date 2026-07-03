@@ -38,44 +38,22 @@
   </div>
 </header>
 
-<!-- SHOP -->
+<!-- SHOP (rendered by JS) -->
 <section id="shop" class="shop">
-
-<h2>Signature Pieces</h2>
-
-<div class="grid">
-
-  <div class="product">
-    <div class="img img1"></div>
-    <h3>Turkish Towel</h3>
-    <p>$39</p>
-    <button onclick="addToCart('Turkish Towel',39)">Add</button>
-  </div>
-
-  <div class="product">
-    <div class="img img2"></div>
-    <h3>Beach Set</h3>
-    <p>$59</p>
-    <button onclick="addToCart('Beach Set',59)">Add</button>
-  </div>
-
-  <div class="product">
-    <div class="img img3"></div>
-    <h3>Spa Robe</h3>
-    <p>$89</p>
-    <button onclick="addToCart('Spa Robe',89)">Add</button>
-  </div>
-
-</div>
-
+  <h2>Signature Collection</h2>
+  <div id="grid" class="grid"></div>
 </section>
 
 <!-- STORY -->
 <section id="story" class="story">
   <div>
     <h2>Quiet Luxury</h2>
-    <p>Minimal design, maximum comfort. Inspired by Mediterranean living.</p>
+    <p>
+      GELIBLOOM is a modern interpretation of Mediterranean craftsmanship.
+      Designed for timeless simplicity and texture.
+    </p>
   </div>
+
   <div class="story-img"></div>
 </section>
 
@@ -84,12 +62,11 @@
   <div class="box">
 
     <h2>Your Cart</h2>
-
     <div id="cartItems"></div>
 
     <h3>Total: $<span id="total">0</span></h3>
 
-    <button onclick="openCheckout()">Checkout</button>
+    <button onclick="checkout()">Checkout</button>
     <button onclick="closeCart()">Close</button>
 
   </div>
@@ -112,66 +89,119 @@
 </div>
 
 <script>
+/* =========================
+   PRODUCT DATABASE (NEW CORE)
+========================= */
+
+const products = [
+{
+id:1,
+name:"Turkish Towel",
+price:39,
+img:"https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800",
+desc:"Ultra-soft Turkish cotton towel. Lightweight luxury."
+},
+{
+id:2,
+name:"Beach Set",
+price:59,
+img:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800",
+desc:"Mediterranean beach essential set."
+},
+{
+id:3,
+name:"Spa Robe",
+price:89,
+img:"https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800",
+desc:"Hotel-grade spa comfort robe."
+}
+];
+
+/* =========================
+   CART ENGINE (UPGRADED)
+========================= */
+
 let cart = [];
 
-function addToCart(name, price) {
-  let existing = cart.find(i => i.name === name);
+function addToCart(id){
 
-  if(existing){
-    existing.qty += 1;
-  } else {
-    cart.push({name, price, qty:1});
-  }
+const product = products.find(p => p.id === id);
+const existing = cart.find(i => i.id === id);
 
-  updateCart();
+if(existing){
+existing.qty++;
+} else {
+cart.push({...product, qty:1});
 }
 
-function updateCart(){
-  let count = 0;
-  let total = 0;
-
-  let html = "";
-
-  cart.forEach((item, index) => {
-    count += item.qty;
-    total += item.price * item.qty;
-
-    html += `
-      <div class="cart-item">
-        <p>${item.name}</p>
-        <p>$${item.price} x ${item.qty}</p>
-        <button onclick="removeItem(${index})">Remove</button>
-      </div>
-    `;
-  });
-
-  document.getElementById("cartItems").innerHTML = html;
-  document.getElementById("cartCount").innerText = count;
-  document.getElementById("total").innerText = total;
+renderCart();
 }
 
-function removeItem(i){
-  cart.splice(i,1);
-  updateCart();
+/* =========================
+   RENDER PRODUCTS (NEW)
+========================= */
+
+function renderProducts(){
+const grid = document.getElementById("grid");
+
+grid.innerHTML = products.map(p => `
+  <div class="product">
+    <div class="img" style="background-image:url('${p.img}')"></div>
+    <h3>${p.name}</h3>
+    <p>$${p.price}</p>
+    <button onclick="addToCart(${p.id})">Add to Cart</button>
+  </div>
+`).join("");
 }
+
+/* =========================
+   CART RENDER
+========================= */
+
+function renderCart(){
+
+let total = 0;
+
+const html = cart.map((item, i) => {
+total += item.price * item.qty;
+
+return `
+<div class="cart-item">
+  <span>${item.name}</span>
+  <span>$${item.price} x ${item.qty}</span>
+</div>
+`;
+}).join("");
+
+document.getElementById("cartItems").innerHTML = html;
+document.getElementById("total").innerText = total;
+document.getElementById("cartCount").innerText = cart.reduce((a,b)=>a+b.qty,0);
+}
+
+/* =========================
+   UI ACTIONS
+========================= */
 
 function openCart(){
-  updateCart();
-  document.getElementById("cart").style.display="flex";
+renderCart();
+document.getElementById("cart").style.display="flex";
 }
 
 function closeCart(){
-  document.getElementById("cart").style.display="none";
+document.getElementById("cart").style.display="none";
 }
 
-function openCheckout(){
-  document.getElementById("checkout").style.display="flex";
-  document.getElementById("cart").style.display="none";
+function checkout(){
+document.getElementById("checkout").style.display="flex";
+document.getElementById("cart").style.display="none";
 }
 
 function closeCheckout(){
-  document.getElementById("checkout").style.display="none";
+document.getElementById("checkout").style.display="none";
 }
+
+/* INIT */
+renderProducts();
 </script>
 
 </body>
