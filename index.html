@@ -1,178 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>House of GELIBLOOM</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-<!-- NAV -->
-<nav class="nav">
-  <div class="logo">GELIBLOOM</div>
-  <div class="links">
-    <a href="#story">Story</a>
-    <a href="#shop">Shop</a>
-    <a href="#craft">Craft</a>
-    <a href="#contact">Contact</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<header class="hero">
-
-<video autoplay muted loop playsinline class="hero-video">
-<source src="https://cdn.pixabay.com/video/2023/08/16/177245-855219293_large.mp4">
-</video>
-
-<div class="hero-overlay"></div>
-
-<div class="hero-content">
-  <h1>Mediterranean Luxury Textiles</h1>
-  <p>Designed in Türkiye. Woven for timeless living.</p>
-
-  <a href="#shop" class="btn">Shop Collection</a>
 </div>
 
 </header>
-
-<!-- TRUST STRIP -->
-<section class="strip">
-  <p>100% Turkish Cotton • Handmade • OEKO-TEX Certified • Luxury Home Essentials</p>
-</section>
-
-<!-- STORY -->
-<section id="story" class="story">
-
-<div class="story-text">
-  <h2>A Quiet Luxury</h2>
-  <p>
-  GELIBLOOM is not fashion. It is atmosphere.
-  Inspired by the silence of the Aegean coast.
-  </p>
-
-  <p>
-  Every piece is made to feel like a hotel suite at home.
-  </p>
-
-  <a class="link">Discover Philosophy →</a>
-</div>
-
-<div class="story-img"></div>
-
-</section>
 
 <!-- SHOP -->
 <section id="shop" class="shop">
 
 <h2>Best Sellers</h2>
 
-<div class="shop-grid">
+<div class="grid">
 
-  <div class="product" onclick="openProduct('Turkish Towel', '$39', 'Soft, quick-dry luxury towel made from 100% Turkish cotton.')">
-    <div class="img img1"></div>
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800">
     <h3>Turkish Towel</h3>
     <p>$39</p>
-    <button>Quick View</button>
+    <button onclick="addToCart('Turkish Towel',39)">Add to Cart</button>
   </div>
 
-  <div class="product" onclick="openProduct('Beach Set', '$59', 'Lightweight beach essential set for Mediterranean living.')">
-    <div class="img img2"></div>
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800">
     <h3>Beach Set</h3>
     <p>$59</p>
-    <button>Quick View</button>
+    <button onclick="addToCart('Beach Set',59)">Add to Cart</button>
   </div>
 
-  <div class="product" onclick="openProduct('Spa Robe', '$89', 'Luxury spa robe inspired by 5-star hotels.')">
-    <div class="img img3"></div>
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800">
     <h3>Spa Robe</h3>
     <p>$89</p>
-    <button>Quick View</button>
+    <button onclick="addToCart('Spa Robe',89)">Add to Cart</button>
   </div>
 
 </div>
 
 </section>
 
-<!-- CRAFT -->
-<section id="craft" class="craft">
-
-<h2>Craftsmanship</h2>
-
-<div class="craft-grid">
+<!-- STORY -->
+<section id="story" class="story">
 
 <div>
-<h3>Weaving</h3>
-<p>Traditional loom techniques refined for modern luxury.</p>
+<h2>Crafted in Türkiye</h2>
+<p>Every piece reflects Mediterranean simplicity and timeless comfort.</p>
 </div>
 
-<div>
-<h3>Material</h3>
-<p>Long-staple Turkish cotton, naturally soft.</p>
-</div>
-
-<div>
-<h3>Design</h3>
-<p>Minimal, architectural Mediterranean aesthetic.</p>
-</div>
-
-</div>
+<div class="story-img"></div>
 
 </section>
 
-<!-- CTA -->
-<section class="cta">
+<!-- CART MODAL -->
+<div id="cart" class="cart">
 
-<h2>Join the GELIBLOOM World</h2>
-<p>Early access to new collections & private drops</p>
+<div class="cart-box">
 
-<input type="email" placeholder="Enter your email">
-<button>Subscribe</button>
+<h2>Your Cart</h2>
 
-</section>
+<div id="cartItems"></div>
 
-<!-- FOOTER -->
-<footer class="footer">
+<h3>Total: $<span id="total">0</span></h3>
 
-<h2>GELIBLOOM</h2>
-<p>info@gelibloom.com</p>
+<button class="checkout">Checkout</button>
+<button onclick="closeCart()">Close</button>
 
-<p class="copy">© 2026 GELIBLOOM</p>
+</div>
 
-</footer>
-
-<!-- PRODUCT MODAL -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-
-    <span class="close" onclick="closeProduct()">×</span>
-
-    <h2 id="mTitle"></h2>
-    <p id="mPrice"></p>
-    <p id="mDesc"></p>
-
-    <button class="buy">Add to Cart</button>
-
-  </div>
 </div>
 
 <script>
-function openProduct(title, price, desc){
-document.getElementById("modal").style.display="flex";
-document.getElementById("mTitle").innerText=title;
-document.getElementById("mPrice").innerText=price;
-document.getElementById("mDesc").innerText=desc;
+let cart = [];
+let total = 0;
+
+function addToCart(name, price){
+cart.push({name,price});
+total += price;
+document.getElementById("cartCount").innerText = cart.length;
 }
 
-function closeProduct(){
-document.getElementById("modal").style.display="none";
+function openCart(){
+document.getElementById("cart").style.display="flex";
+
+let html="";
+cart.forEach(item=>{
+html += `<p>${item.name} - $${item.price}</p>`;
+});
+
+document.getElementById("cartItems").innerHTML=html;
+document.getElementById("total").innerText=total;
+}
+
+function closeCart(){
+document.getElementById("cart").style.display="none";
 }
 </script>
 
