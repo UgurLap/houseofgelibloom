@@ -18,16 +18,16 @@
   <div class="logo">GELIBLOOM</div>
 
   <div class="links">
-    <a href="#shop">Shop</a>
-    <a href="#story">Story</a>
+    <a onclick="navigate('home')">Shop</a>
+    <a onclick="navigate('admin')">Admin</a>
     <a onclick="openCart()">Cart (<span id="cartCount">0</span>)</a>
   </div>
 </nav>
 
-<!-- ROUTE VIEW (NEW CORE IDEA) -->
+<!-- APP ROOT -->
 <main id="app"></main>
 
-<!-- CART -->
+<!-- CART MODAL -->
 <div id="cart" class="modal">
   <div class="box">
 
@@ -36,107 +36,57 @@
 
     <h3>Total: $<span id="total">0</span></h3>
 
-    <button onclick="checkout()">Checkout</button>
     <button onclick="closeCart()">Close</button>
-
-  </div>
-</div>
-
-<!-- CHECKOUT -->
-<div id="checkout" class="modal">
-  <div class="box">
-
-    <h2>Secure Checkout</h2>
-
-    <input placeholder="Full Name">
-    <input placeholder="Address">
-    <input placeholder="Card Number">
-
-    <button>Pay Now</button>
-    <button onclick="closeCheckout()">Back</button>
 
   </div>
 </div>
 
 <script>
 /* =========================
-   STATE (mini framework core)
+   STATE (mini store engine)
 ========================= */
 
-let state = {
-cart: JSON.parse(localStorage.getItem("cart")) || []
+let store = {
+products: JSON.parse(localStorage.getItem("products")) || [
+  {id:1,name:"Turkish Towel",price:39,img:"https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800"},
+  {id:2,name:"Beach Set",price:59,img:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800"},
+  {id:3,name:"Spa Robe",price:89,img:"https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800"}
+],
+
+cart: JSON.parse(localStorage.getItem("cart")) || [],
+
+page:"home"
 };
 
 /* =========================
-   PRODUCT DATABASE
+   RENDER ENGINE
 ========================= */
 
-const products = [
-{
-id:1,
-name:"Turkish Towel",
-price:39,
-img:"https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800",
-desc:"Ultra-soft Turkish cotton towel."
-},
-{
-id:2,
-name:"Beach Set",
-price:59,
-img:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800",
-desc:"Mediterranean beach essential set."
-},
-{
-id:3,
-name:"Spa Robe",
-price:89,
-img:"https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800",
-desc:"Hotel-grade spa comfort robe."
-}
-];
-
-/* =========================
-   ROUTER (NEW)
-========================= */
-
-function router(){
-const hash = location.hash.replace("#","");
-
-if(hash.startsWith("product/")){
-const id = parseInt(hash.split("/")[1]);
-return renderProductPage(id);
+function render(){
+if(store.page==="home") renderHome();
+if(store.page==="admin") renderAdmin();
 }
 
-return renderHome();
-}
-
-window.addEventListener("hashchange", router);
-
-/* =========================
-   COMPONENTS
-========================= */
-
+/* HOME PAGE */
 function renderHome(){
 document.getElementById("app").innerHTML = `
 <section class="hero">
-  <div class="hero-content">
+  <div>
     <h1>Mediterranean Luxury</h1>
-    <p>Crafted in Türkiye for timeless living</p>
-    <a href="#shop" class="btn">Explore</a>
+    <p>Crafted in Türkiye</p>
   </div>
 </section>
 
 <section class="shop">
-  <h2>Signature Collection</h2>
+  <h2>Products</h2>
 
   <div class="grid">
-    ${products.map(p => `
+    ${store.products.map(p=>`
       <div class="product">
         <div class="img" style="background-image:url('${p.img}')"></div>
         <h3>${p.name}</h3>
         <p>$${p.price}</p>
 
-        <button onclick="location.hash='product/${p.id}'">View</button>
         <button onclick="addToCart(${p.id})">Add</button>
       </div>
     `).join("")}
@@ -145,82 +95,111 @@ document.getElementById("app").innerHTML = `
 `;
 }
 
-/* PRODUCT PAGE (NEW MAJOR FEATURE) */
-
-function renderProductPage(id){
-const p = products.find(x=>x.id===id);
-
+/* ADMIN PANEL (NEW BIG FEATURE) */
+function renderAdmin(){
 document.getElementById("app").innerHTML = `
-<section class="product-page">
+<section class="admin">
 
-  <div class="product-hero" style="background-image:url('${p.img}')"></div>
+  <h1>Admin Panel</h1>
 
-  <div class="product-info">
-    <h1>${p.name}</h1>
-    <p>${p.desc}</p>
-    <h2>$${p.price}</h2>
+  <input id="name" placeholder="Product Name">
+  <input id="price" placeholder="Price">
+  <input id="img" placeholder="Image URL">
 
-    <button onclick="addToCart(${p.id})">Add to Cart</button>
-    <button onclick="location.hash=''">Back</button>
-  </div>
+  <button onclick="addProduct()">Add Product</button>
+
+  <h3>Existing Products</h3>
+
+  ${store.products.map(p=>`
+    <div class="admin-item">
+      ${p.name} - $${p.price}
+      <button onclick="removeProduct(${p.id})">Delete</button>
+    </div>
+  `).join("")}
 
 </section>
 `;
 }
 
 /* =========================
-   CART SYSTEM (persisted)
+   ADMIN ACTIONS
+========================= */
+
+function addProduct(){
+const name = document.getElementById("name").value;
+const price = Number(document.getElementById("price").value);
+const img = document.getElementById("img").value;
+
+const id = Date.now();
+
+store.products.push({id,name,price,img});
+save();
+render();
+}
+
+function removeProduct(id){
+store.products = store.products.filter(p=>p.id!==id);
+save();
+render();
+}
+
+/* =========================
+   CART ENGINE
 ========================= */
 
 function addToCart(id){
+const p = store.products.find(x=>x.id===id);
 
-const product = products.find(p => p.id === id);
-const existing = state.cart.find(i => i.id === id);
+const exist = store.cart.find(i=>i.id===id);
 
-if(existing){
-existing.qty++;
-} else {
-state.cart.push({...product, qty:1});
+if(exist){
+exist.qty++;
+}else{
+store.cart.push({...p,qty:1});
 }
 
-saveCart();
-updateCartUI();
+save();
+updateCart();
 }
 
-function saveCart(){
-localStorage.setItem("cart", JSON.stringify(state.cart));
+function updateCart(){
+let total=0;
+let count=0;
+
+let html="";
+
+store.cart.forEach(i=>{
+count+=i.qty;
+total+=i.price*i.qty;
+
+html+=`
+<div class="cart-item">
+  <span>${i.name}</span>
+  <span>${i.qty} x $${i.price}</span>
+</div>
+`;
+});
+
+document.getElementById("cartItems").innerHTML=html;
+document.getElementById("total").innerText=total;
+document.getElementById("cartCount").innerText=count;
+}
+
+/* =========================
+   NAVIGATION SYSTEM
+========================= */
+
+function navigate(page){
+store.page=page;
+render();
 }
 
 /* =========================
    CART UI
 ========================= */
 
-function updateCartUI(){
-
-let count = 0;
-let total = 0;
-
-let html = "";
-
-state.cart.forEach((item,i)=>{
-count += item.qty;
-total += item.price * item.qty;
-
-html += `
-<div class="cart-item">
-  <span>${item.name}</span>
-  <span>${item.qty} x $${item.price}</span>
-</div>
-`;
-});
-
-document.getElementById("cartItems").innerHTML = html;
-document.getElementById("cartCount").innerText = count;
-document.getElementById("total").innerText = total;
-}
-
 function openCart(){
-updateCartUI();
+updateCart();
 document.getElementById("cart").style.display="flex";
 }
 
@@ -228,18 +207,18 @@ function closeCart(){
 document.getElementById("cart").style.display="none";
 }
 
-function checkout(){
-document.getElementById("checkout").style.display="flex";
-document.getElementById("cart").style.display="none";
-}
+/* =========================
+   STORAGE ENGINE
+========================= */
 
-function closeCheckout(){
-document.getElementById("checkout").style.display="none";
+function save(){
+localStorage.setItem("products",JSON.stringify(store.products));
+localStorage.setItem("cart",JSON.stringify(store.cart));
 }
 
 /* INIT */
-router();
-updateCartUI();
+render();
+updateCart();
 </script>
 
 </body>
