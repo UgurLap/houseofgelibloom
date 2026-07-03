@@ -1,9 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>House of GELIBLOOM</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+<div class="logo">GELIBLOOM</div>
+<div class="menu">
+<a href="#story">Story</a>
+<a href="#collections">Collections</a>
+<a href="#craft">Craft</a>
+<a href="#contact">Contact</a>
+</div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+
+<video autoplay muted loop playsinline class="hero-video">
+<source src="https://cdn.coverr.co/videos/coverr-aerial-view-of-the-sea-1551/1080p.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<div class="hero-content">
+<h1>House of GELIBLOOM</h1>
+<p>Mediterranean Luxury Inspired by Timeless Coastal Living</p>
+<a href="#story" class="btn">Discover the Brand</a>
+</div>
+
+</header>
+
+<!-- STORY -->
+<section id="story" class="section">
 <h2>The Story of Quiet Luxury</h2>
 <p>Born on the shores of the Aegean, House of GELIBLOOM represents slow luxury, natural fabrics, and timeless Mediterranean craftsmanship.</p>
 </section>
 
 <!-- COLLECTIONS -->
-<section id="collections" class="section parallax">
+<section id="collections" class="section">
 <h2>Collections</h2>
 
 <div class="grid">
@@ -36,13 +80,13 @@
 </section>
 
 <!-- CRAFT -->
-<section id="craft" class="section parallax">
+<section id="craft" class="section">
 <h2>Craftsmanship</h2>
 <p>Each piece is designed with attention to texture, weight, and feeling — inspired by Turkish weaving traditions and modern minimalism.</p>
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="section parallax">
+<section id="contact" class="section">
 <h2>Contact Us</h2>
 
 <div class="contact-box">
@@ -63,7 +107,7 @@
 
 <!-- PARALLAX SCRIPT -->
 <script>
-const elements = document.querySelectorAll('.parallax');
+const sections = document.querySelectorAll('.section');
 
 const observer = new IntersectionObserver(entries => {
 entries.forEach(entry => {
@@ -73,7 +117,7 @@ entry.target.classList.add('active');
 });
 },{ threshold: 0.15 });
 
-elements.forEach(el => observer.observe(el));
+sections.forEach(sec => observer.observe(sec));
 </script>
 
 </body>
