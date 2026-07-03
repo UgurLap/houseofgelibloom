@@ -1,33 +1,20 @@
-</div>
-
-</header>
-
-<!-- SHOP -->
-<section id="shop" class="shop">
-
-<h2>Best Sellers</h2>
-
-<div class="grid">
-
-  <div class="product">
-    <img src="https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800">
-    <h3>Turkish Towel</h3>
-    <p>$39</p>
-    <button onclick="addToCart('Turkish Towel',39)">Add to Cart</button>
+<button onclick="addToCart('Turkish Towel',39)">Add</button>
   </div>
 
   <div class="product">
     <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800">
     <h3>Beach Set</h3>
     <p>$59</p>
-    <button onclick="addToCart('Beach Set',59)">Add to Cart</button>
+    <button onclick="openProduct('Beach Set',59,'Mediterranean beach essential set. Minimal, elegant design.')">View</button>
+    <button onclick="addToCart('Beach Set',59)">Add</button>
   </div>
 
   <div class="product">
     <img src="https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800">
     <h3>Spa Robe</h3>
     <p>$89</p>
-    <button onclick="addToCart('Spa Robe',89)">Add to Cart</button>
+    <button onclick="openProduct('Spa Robe',89,'Luxury spa robe inspired by 5-star hotel comfort.')">View</button>
+    <button onclick="addToCart('Spa Robe',89)">Add</button>
   </div>
 
 </div>
@@ -36,37 +23,57 @@
 
 <!-- STORY -->
 <section id="story" class="story">
-
-<div>
-<h2>Crafted in Türkiye</h2>
-<p>Every piece reflects Mediterranean simplicity and timeless comfort.</p>
-</div>
-
-<div class="story-img"></div>
-
+  <div>
+    <h2>Quiet Luxury</h2>
+    <p>GELIBLOOM is a lifestyle rooted in Mediterranean calm and textile heritage.</p>
+  </div>
+  <div class="story-img"></div>
 </section>
 
-<!-- CART MODAL -->
-<div id="cart" class="cart">
+<!-- CART -->
+<div id="cart" class="modal">
+  <div class="box">
+    <h2>Your Cart</h2>
 
-<div class="cart-box">
+    <div id="cartItems"></div>
 
-<h2>Your Cart</h2>
+    <h3>Total: $<span id="total">0</span></h3>
 
-<div id="cartItems"></div>
-
-<h3>Total: $<span id="total">0</span></h3>
-
-<button class="checkout">Checkout</button>
-<button onclick="closeCart()">Close</button>
-
+    <button onclick="openCheckout()">Checkout</button>
+    <button onclick="closeCart()">Close</button>
+  </div>
 </div>
 
+<!-- PRODUCT MODAL -->
+<div id="productModal" class="modal">
+  <div class="box">
+    <h2 id="pTitle"></h2>
+    <p id="pDesc"></p>
+    <h3>$<span id="pPrice"></span></h3>
+
+    <button onclick="addFromModal()">Add to Cart</button>
+    <button onclick="closeProduct()">Close</button>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div id="checkout" class="modal">
+  <div class="box">
+    <h2>Checkout</h2>
+    <p>Enter your details</p>
+
+    <input placeholder="Full Name">
+    <input placeholder="Address">
+
+    <button>Pay Securely</button>
+    <button onclick="closeCheckout()">Back</button>
+  </div>
 </div>
 
 <script>
 let cart = [];
 let total = 0;
+let selectedProduct = null;
 
 function addToCart(name, price){
 cart.push({name,price});
@@ -75,19 +82,49 @@ document.getElementById("cartCount").innerText = cart.length;
 }
 
 function openCart(){
+renderCart();
 document.getElementById("cart").style.display="flex";
+}
 
+function renderCart(){
 let html="";
-cart.forEach(item=>{
+cart.forEach((item,i)=>{
 html += `<p>${item.name} - $${item.price}</p>`;
 });
-
 document.getElementById("cartItems").innerHTML=html;
 document.getElementById("total").innerText=total;
 }
 
 function closeCart(){
 document.getElementById("cart").style.display="none";
+}
+
+function openProduct(title,price,desc){
+selectedProduct = {title,price,desc};
+
+document.getElementById("pTitle").innerText=title;
+document.getElementById("pPrice").innerText=price;
+document.getElementById("pDesc").innerText=desc;
+
+document.getElementById("productModal").style.display="flex";
+}
+
+function addFromModal(){
+addToCart(selectedProduct.title, selectedProduct.price);
+closeProduct();
+}
+
+function closeProduct(){
+document.getElementById("productModal").style.display="none";
+}
+
+function openCheckout(){
+document.getElementById("checkout").style.display="flex";
+document.getElementById("cart").style.display="none";
+}
+
+function closeCheckout(){
+document.getElementById("checkout").style.display="none";
 }
 </script>
 
