@@ -27,91 +27,101 @@
 
 <!-- HERO -->
 <header class="hero">
-  <video autoplay muted loop playsinline class="hero-video">
-    <source src="https://cdn.pixabay.com/video/2023/08/16/177245-855219293_large.mp4">
-  </video>
 
-  <div class="hero-overlay"></div>
+<video autoplay muted loop playsinline class="hero-video">
+<source src="https://cdn.pixabay.com/video/2023/08/16/177245-855219293_large.mp4">
+</video>
 
-  <div class="hero-content fade">
-    <h1>Mediterranean Luxury</h1>
-    <p>Crafted in Türkiye for timeless living</p>
-    <a href="#shop" class="btn">Discover Collection</a>
-  </div>
+<div class="hero-overlay"></div>
+
+<div class="hero-content">
+  <h1>Mediterranean Luxury</h1>
+  <p>Crafted in Türkiye. Designed for timeless living.</p>
+
+  <a href="#shop" class="btn">Explore Collection</a>
+</div>
+
 </header>
 
 <!-- STORY -->
-<section id="story" class="story reveal">
+<section id="story" class="story">
 
-  <div class="story-text">
-    <h2>Quiet Luxury, Redefined</h2>
-    <p>
-      GELIBLOOM is a modern interpretation of Mediterranean textile heritage.
-      Designed for simplicity, softness and timeless elegance.
-    </p>
-  </div>
+<div class="story-text">
+  <h2>Quiet Luxury Defined</h2>
+  <p>
+  GELIBLOOM represents modern Mediterranean craftsmanship.
+  Every product is designed with simplicity, texture and permanence.
+  </p>
 
-  <div class="story-img"></div>
+  <p>
+  This is not fashion. This is lifestyle architecture.
+  </p>
+</div>
+
+<div class="story-img"></div>
 
 </section>
 
 <!-- SHOP -->
-<section id="shop" class="shop reveal">
+<section id="shop" class="shop">
 
 <h2>Signature Collection</h2>
 
 <div class="grid">
 
-  <div class="product">
-    <div class="img img1" onclick="openGallery(0)"></div>
+  <div class="product" onclick="openProduct(0)">
+    <div class="img img1"></div>
     <h3>Turkish Towel</h3>
     <p>$39</p>
-    <button onclick="addToCart('Turkish Towel',39)">Add to Cart</button>
+    <button>Add to Cart</button>
   </div>
 
-  <div class="product">
-    <div class="img img2" onclick="openGallery(1)"></div>
+  <div class="product" onclick="openProduct(1)">
+    <div class="img img2"></div>
     <h3>Beach Set</h3>
     <p>$59</p>
-    <button onclick="addToCart('Beach Set',59)">Add to Cart</button>
+    <button>Add to Cart</button>
   </div>
 
-  <div class="product">
-    <div class="img img3" onclick="openGallery(2)"></div>
+  <div class="product" onclick="openProduct(2)">
+    <div class="img img3"></div>
     <h3>Spa Robe</h3>
     <p>$89</p>
-    <button onclick="addToCart('Spa Robe',89)">Add to Cart</button>
+    <button>Add to Cart</button>
   </div>
 
 </div>
 
 </section>
 
+<!-- PRODUCT DETAIL (NEW V10 FEATURE) -->
+<div id="productModal" class="modal">
+  <div class="box large">
+
+    <span class="close" onclick="closeProduct()">×</span>
+
+    <div id="productImage" class="product-img"></div>
+
+    <h2 id="pTitle"></h2>
+    <p id="pDesc"></p>
+    <h3>$<span id="pPrice"></span></h3>
+
+    <button onclick="addFromProduct()">Add to Cart</button>
+
+  </div>
+</div>
+
 <!-- CART -->
 <div id="cart" class="modal">
   <div class="box">
-    <h2>Your Cart</h2>
 
+    <h2>Your Cart</h2>
     <div id="cartItems"></div>
+
     <h3>Total: $<span id="total">0</span></h3>
 
     <button onclick="checkout()">Checkout</button>
     <button onclick="closeCart()">Close</button>
-  </div>
-</div>
-
-<!-- GALLERY MODAL -->
-<div id="gallery" class="modal">
-  <div class="box large">
-
-    <span class="close" onclick="closeGallery()">×</span>
-
-    <div id="galleryImg" class="gallery-img"></div>
-
-    <div class="controls">
-      <button onclick="prev()">Prev</button>
-      <button onclick="next()">Next</button>
-    </div>
 
   </div>
 </div>
@@ -136,14 +146,50 @@
 let cart=[];
 let total=0;
 
-let images=[
-"https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800",
-"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800",
-"https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800"
+const products=[
+{
+name:"Turkish Towel",
+price:39,
+img:"https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800",
+desc:"Ultra-soft Turkish cotton towel. Lightweight, fast-dry luxury."
+},
+{
+name:"Beach Set",
+price:59,
+img:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800",
+desc:"Mediterranean beach essential set designed for comfort."
+},
+{
+name:"Spa Robe",
+price:89,
+img:"https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800",
+desc:"Hotel-grade spa robe experience at home."
+}
 ];
 
-let current=0;
+let selected=null;
 
+/* PRODUCT */
+function openProduct(i){
+selected=products[i];
+
+document.getElementById("productModal").style.display="flex";
+document.getElementById("pTitle").innerText=selected.name;
+document.getElementById("pPrice").innerText=selected.price;
+document.getElementById("pDesc").innerText=selected.desc;
+document.getElementById("productImage").style.backgroundImage=`url(${selected.img})`;
+}
+
+function closeProduct(){
+document.getElementById("productModal").style.display="none";
+}
+
+function addFromProduct(){
+addToCart(selected.name,selected.price);
+closeProduct();
+}
+
+/* CART */
 function addToCart(name,price){
 cart.push({name,price});
 total+=price;
@@ -168,31 +214,6 @@ function closeCart(){
 document.getElementById("cart").style.display="none";
 }
 
-/* GALLERY */
-function openGallery(i){
-current=i;
-document.getElementById("gallery").style.display="flex";
-update();
-}
-
-function update(){
-document.getElementById("galleryImg").style.backgroundImage=`url(${images[current]})`;
-}
-
-function next(){
-current=(current+1)%images.length;
-update();
-}
-
-function prev(){
-current=(current-1+images.length)%images.length;
-update();
-}
-
-function closeGallery(){
-document.getElementById("gallery").style.display="none";
-}
-
 /* CHECKOUT */
 function checkout(){
 document.getElementById("checkout").style.display="flex";
@@ -202,16 +223,6 @@ document.getElementById("cart").style.display="none";
 function closeCheckout(){
 document.getElementById("checkout").style.display="none";
 }
-
-/* SCROLL REVEAL */
-window.addEventListener("scroll",()=>{
-document.querySelectorAll(".reveal").forEach(el=>{
-let top=el.getBoundingClientRect().top;
-if(top<700){
-el.classList.add("active");
-}
-});
-});
 </script>
 
 </body>
