@@ -13,18 +13,16 @@
 
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="logo">GELIBLOOM</div>
 
   <div class="links">
-    <a onclick="navigate('shop')">Shop</a>
-    <a onclick="navigate('admin')">Admin</a>
+    <a onclick="go('shop')">Shop</a>
+    <a onclick="go('admin')">Admin</a>
     <a onclick="openCart()">Cart (<span id="cartCount">0</span>)</a>
   </div>
 </nav>
 
-<!-- APP -->
 <main id="app"></main>
 
 <!-- CART -->
@@ -39,71 +37,94 @@
 
 <script>
 /* =========================
-   FAKE API LAYER (NEW CORE)
+   FAKE BACKEND (NEW V16 CORE)
 ========================= */
 
-const API = {
-  async getProducts(){
-    return new Promise(res=>{
-      setTimeout(()=>{
-        res(JSON.parse(localStorage.getItem("products")) || [
-          {id:1,name:"Turkish Towel",price:39,img:"https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800"},
-          {id:2,name:"Beach Set",price:59,img:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800"},
-          {id:3,name:"Spa Robe",price:89,img:"https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800"}
-        ]);
-      },500);
-    });
-  },
+const DB = {
+async getProducts(){
+return new Promise(res=>{
+setTimeout(()=>{
+res(JSON.parse(localStorage.getItem("products")) || [
+{id:1,name:"Turkish Towel",price:39,img:"https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800"},
+{id:2,name:"Beach Set",price:59,img:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800"},
+{id:3,name:"Spa Robe",price:89,img:"https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800"}
+]);
+},800); // loading simulation
+});
+},
 
-  async saveProducts(data){
-    localStorage.setItem("products",JSON.stringify(data));
-  }
+async saveProducts(data){
+localStorage.setItem("products",JSON.stringify(data));
+}
 };
 
 /* =========================
-   STATE MANAGER
+   GLOBAL STORE (V16 CORE)
 ========================= */
 
-let state = {
+const Store = {
+state:{
 page:"shop",
+loading:false,
 products:[],
-cart:JSON.parse(localStorage.getItem("cart"))||[],
-user:{logged:false}
+cart: JSON.parse(localStorage.getItem("cart")) || []
+},
+
+setState(newState){
+this.state = {...this.state,...newState};
+render();
+updateCart();
+}
 };
 
 /* =========================
-   INIT
+   INIT APP
 ========================= */
 
 async function init(){
-state.products = await API.getProducts();
-render();
-updateCart();
+Store.setState({loading:true});
+
+const products = await DB.getProducts();
+
+Store.setState({
+products,
+loading:false
+});
 }
 
 /* =========================
    ROUTER
 ========================= */
 
-function navigate(page){
-state.page=page;
-render();
+function go(page){
+Store.setState({page});
 }
 
 /* =========================
-   RENDER SYSTEM
+   RENDER ENGINE
 ========================= */
 
 function render(){
-if(state.page==="shop") renderShop();
-if(state.page==="admin") renderAdmin();
+
+const s = Store.state;
+
+if(s.loading){
+document.getElementById("app").innerHTML = `
+<div class="loading">Loading GELIBLOOM...</div>`;
+return;
+}
+
+if(s.page==="shop") renderShop();
+if(s.page==="admin") renderAdmin();
 }
 
 /* =========================
-   SHOP PAGE
+   SHOP UI
 ========================= */
 
 function renderShop(){
+
+const s = Store.state;
 
 document.getElementById("app").innerHTML = `
 <section class="hero">
@@ -114,10 +135,10 @@ document.getElementById("app").innerHTML = `
 </section>
 
 <section class="shop">
-  <h2>Products</h2>
+  <h2>Collection</h2>
 
   <div class="grid">
-    ${state.products.map(p=>`
+    ${s.products.map(p=>`
       <div class="product">
         <div class="img" style="background-image:url('${p.img}')"></div>
         <h3>${p.name}</h3>
@@ -131,39 +152,29 @@ document.getElementById("app").innerHTML = `
 }
 
 /* =========================
-   ADMIN (LOGIN MOCK + CRUD)
+   ADMIN (REAL APP STYLE)
 ========================= */
 
 function renderAdmin(){
 
-if(!state.user.logged){
-document.getElementById("app").innerHTML=`
-<section class="admin">
-  <h1>Admin Login</h1>
-  <input id="pass" placeholder="Enter password">
-  <button onclick="login()">Login</button>
-</section>`;
-return;
-}
-
 document.getElementById("app").innerHTML=`
 <section class="admin">
 
-<h1>Product Admin</h1>
+<h1>Admin Panel</h1>
 
 <input id="name" placeholder="Product Name">
 <input id="price" placeholder="Price">
 <input id="img" placeholder="Image URL">
 
-<button onclick="addProduct()">Add Product</button>
+<button onclick="addProduct()">Create Product</button>
 
 <h3>Products</h3>
 
-${state.products.map(p=>`
-  <div class="admin-item">
-    ${p.name} - $${p.price}
-    <button onclick="deleteProduct(${p.id})">Delete</button>
-  </div>
+${Store.state.products.map(p=>`
+<div class="admin-item">
+${p.name} - $${p.price}
+<button onclick="deleteProduct(${p.id})">Remove</button>
+</div>
 `).join("")}
 
 </section>
@@ -171,66 +182,66 @@ ${state.products.map(p=>`
 }
 
 /* =========================
-   AUTH
+   CRUD OPERATIONS
 ========================= */
 
-function login(){
-const pass=document.getElementById("pass").value;
+async function addProduct(){
 
-if(pass==="1234"){
-state.user.logged=true;
-render();
-}else{
-alert("Wrong password");
-}
-}
-
-/* =========================
-   CRUD
-========================= */
-
-function addProduct(){
-const p={
+const newP = {
 id:Date.now(),
 name:document.getElementById("name").value,
 price:Number(document.getElementById("price").value),
 img:document.getElementById("img").value
 };
 
-state.products.push(p);
-API.saveProducts(state.products);
-render();
+const updated = [...Store.state.products,newP];
+
+Store.setState({products:updated});
+
+await DB.saveProducts(updated);
 }
 
-function deleteProduct(id){
-state.products=state.products.filter(p=>p.id!==id);
-API.saveProducts(state.products);
-render();
+async function deleteProduct(id){
+
+const updated = Store.state.products.filter(p=>p.id!==id);
+
+Store.setState({products:updated});
+
+await DB.saveProducts(updated);
 }
 
 /* =========================
-   CART SYSTEM
+   CART ENGINE
 ========================= */
 
 function addToCart(id){
-const p=state.products.find(x=>x.id===id);
 
-const ex=state.cart.find(i=>i.id===id);
+const p = Store.state.products.find(x=>x.id===id);
+
+const cart = [...Store.state.cart];
+
+const ex = cart.find(i=>i.id===id);
 
 if(ex) ex.qty++;
-else state.cart.push({...p,qty:1});
+else cart.push({...p,qty:1});
 
-saveCart();
-updateCart();
+localStorage.setItem("cart",JSON.stringify(cart));
+
+Store.setState({cart});
 }
 
+/* =========================
+   CART UI
+========================= */
+
 function updateCart(){
+
 let total=0;
 let count=0;
 
 let html="";
 
-state.cart.forEach(i=>{
+Store.state.cart.forEach(i=>{
 count+=i.qty;
 total+=i.price*i.qty;
 
@@ -246,12 +257,8 @@ document.getElementById("total").innerText=total;
 document.getElementById("cartCount").innerText=count;
 }
 
-function saveCart(){
-localStorage.setItem("cart",JSON.stringify(state.cart));
-}
-
 /* =========================
-   CART UI
+   CART MODAL
 ========================= */
 
 function openCart(){
