@@ -19,7 +19,7 @@ width:100%;
 display:flex;
 justify-content:space-between;
 padding:20px 70px;
-background:rgba(255,255,255,0.6);
+background:rgba(255,255,255,0.65);
 backdrop-filter:blur(20px);
 z-index:999;
 }
@@ -68,7 +68,7 @@ max-width:900px;
 }
 
 .hero-content h1{
-font-size:90px;
+font-size:92px;
 font-family:'Cormorant Garamond', serif;
 }
 
@@ -137,7 +137,7 @@ background:url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?aut
 border-radius:20px;
 }
 
-/* MODALS */
+/* MODAL SYSTEM */
 .modal{
 display:none;
 position:fixed;
@@ -174,4 +174,12 @@ border-radius:30px;
 background:#111;
 color:white;
 cursor:pointer;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+.hero-content h1{font-size:50px;}
+.grid{grid-template-columns:1fr;}
+.story{grid-template-columns:1fr;}
+.nav{padding:15px 20px;}
 }
