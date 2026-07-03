@@ -1,11 +1,67 @@
-<button onclick="addToCart('Turkish Towel',39)">Add</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>House of GELIBLOOM</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="logo">GELIBLOOM</div>
+
+  <div class="links">
+    <a href="#shop">Shop</a>
+    <a href="#story">Story</a>
+    <a onclick="openCart()">Cart (<span id="cartCount">0</span>)</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+
+<video autoplay muted loop playsinline class="hero-video">
+<source src="https://cdn.pixabay.com/video/2023/08/16/177245-855219293_large.mp4">
+</video>
+
+<div class="hero-overlay"></div>
+
+<div class="hero-content">
+  <h1>Mediterranean Luxury</h1>
+  <p>Crafted in Türkiye for timeless living</p>
+  <a href="#shop" class="btn">Explore Collection</a>
+</div>
+
+</header>
+
+<!-- SHOP -->
+<section id="shop" class="shop">
+
+<h2>Best Sellers</h2>
+
+<div class="grid">
+
+  <div class="product">
+    <img src="https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800">
+    <h3>Turkish Towel</h3>
+    <p>$39</p>
+    <button onclick="openProduct('Turkish Towel',39,'Soft luxury Turkish cotton towel')">View</button>
+    <button onclick="addToCart('Turkish Towel',39)">Add</button>
   </div>
 
   <div class="product">
     <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800">
     <h3>Beach Set</h3>
     <p>$59</p>
-    <button onclick="openProduct('Beach Set',59,'Mediterranean beach essential set. Minimal, elegant design.')">View</button>
+    <button onclick="openProduct('Beach Set',59,'Mediterranean beach essentials')">View</button>
     <button onclick="addToCart('Beach Set',59)">Add</button>
   </div>
 
@@ -13,7 +69,7 @@
     <img src="https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800">
     <h3>Spa Robe</h3>
     <p>$89</p>
-    <button onclick="openProduct('Spa Robe',89,'Luxury spa robe inspired by 5-star hotel comfort.')">View</button>
+    <button onclick="openProduct('Spa Robe',89,'Luxury spa hotel robe experience')">View</button>
     <button onclick="addToCart('Spa Robe',89)">Add</button>
   </div>
 
@@ -23,10 +79,11 @@
 
 <!-- STORY -->
 <section id="story" class="story">
-  <div>
-    <h2>Quiet Luxury</h2>
-    <p>GELIBLOOM is a lifestyle rooted in Mediterranean calm and textile heritage.</p>
+  <div class="story-text">
+    <h2>Quiet Mediterranean Luxury</h2>
+    <p>GELIBLOOM is designed for calm living, natural textures and timeless elegance.</p>
   </div>
+
   <div class="story-img"></div>
 </section>
 
@@ -44,14 +101,14 @@
   </div>
 </div>
 
-<!-- PRODUCT MODAL -->
-<div id="productModal" class="modal">
+<!-- PRODUCT -->
+<div id="product" class="modal">
   <div class="box">
     <h2 id="pTitle"></h2>
     <p id="pDesc"></p>
     <h3>$<span id="pPrice"></span></h3>
 
-    <button onclick="addFromModal()">Add to Cart</button>
+    <button onclick="addFromProduct()">Add to Cart</button>
     <button onclick="closeProduct()">Close</button>
   </div>
 </div>
@@ -59,13 +116,13 @@
 <!-- CHECKOUT -->
 <div id="checkout" class="modal">
   <div class="box">
-    <h2>Checkout</h2>
-    <p>Enter your details</p>
+    <h2>Secure Checkout</h2>
 
     <input placeholder="Full Name">
     <input placeholder="Address">
+    <input placeholder="Card Number">
 
-    <button>Pay Securely</button>
+    <button>Pay Now</button>
     <button onclick="closeCheckout()">Back</button>
   </div>
 </div>
@@ -73,9 +130,9 @@
 <script>
 let cart = [];
 let total = 0;
-let selectedProduct = null;
+let selected = null;
 
-function addToCart(name, price){
+function addToCart(name,price){
 cart.push({name,price});
 total += price;
 document.getElementById("cartCount").innerText = cart.length;
@@ -99,23 +156,21 @@ function closeCart(){
 document.getElementById("cart").style.display="none";
 }
 
-function openProduct(title,price,desc){
-selectedProduct = {title,price,desc};
-
-document.getElementById("pTitle").innerText=title;
-document.getElementById("pPrice").innerText=price;
-document.getElementById("pDesc").innerText=desc;
-
-document.getElementById("productModal").style.display="flex";
+function openProduct(t,p,d){
+selected={t,p,d};
+document.getElementById("pTitle").innerText=t;
+document.getElementById("pPrice").innerText=p;
+document.getElementById("pDesc").innerText=d;
+document.getElementById("product").style.display="flex";
 }
 
-function addFromModal(){
-addToCart(selectedProduct.title, selectedProduct.price);
+function addFromProduct(){
+addToCart(selected.t,selected.p);
 closeProduct();
 }
 
 function closeProduct(){
-document.getElementById("productModal").style.display="none";
+document.getElementById("product").style.display="none";
 }
 
 function openCheckout(){
