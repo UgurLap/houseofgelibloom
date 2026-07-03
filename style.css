@@ -18,7 +18,7 @@ width:100%;
 display:flex;
 justify-content:space-between;
 padding:20px 70px;
-background:rgba(255,255,255,0.75);
+background:rgba(255,255,255,0.8);
 backdrop-filter:blur(25px);
 z-index:999;
 }
@@ -43,48 +43,33 @@ justify-content:center;
 text-align:center;
 }
 
-.hero-content h1{
-font-size:92px;
+.hero h1{
+font-size:80px;
 font-family:'Cormorant Garamond', serif;
-}
-
-.hero-content p{
-opacity:0.85;
-margin-top:15px;
-}
-
-.btn{
-display:inline-block;
-margin-top:25px;
-padding:14px 40px;
-background:black;
-color:white;
-border-radius:50px;
-text-decoration:none;
 }
 
 /* SHOP */
 .shop{
-padding:160px 10%;
+padding:140px 10%;
 text-align:center;
 }
 
 .grid{
-margin-top:60px;
+margin-top:50px;
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:30px;
+gap:25px;
 }
 
 .product{
 background:white;
-border-radius:20px;
+border-radius:18px;
 overflow:hidden;
-box-shadow:0 30px 70px rgba(0,0,0,0.06);
+box-shadow:0 30px 60px rgba(0,0,0,0.05);
 }
 
 .img{
-height:240px;
+height:220px;
 background-size:cover;
 background-position:center;
 }
@@ -92,35 +77,45 @@ background-position:center;
 .product button{
 margin:10px;
 padding:10px 20px;
-border:none;
 background:#111;
 color:white;
-border-radius:30px;
+border:none;
+border-radius:25px;
+}
+
+/* ADMIN */
+.admin{
+padding:140px 10%;
+max-width:700px;
+margin:auto;
+}
+
+.admin input{
+width:100%;
+padding:12px;
+margin:10px 0;
+}
+
+.admin button{
+padding:12px 20px;
+margin-top:10px;
+background:black;
+color:white;
+border:none;
+border-radius:20px;
 cursor:pointer;
 }
 
-/* PRODUCT PAGE */
-.product-page{
-display:grid;
-grid-template-columns:1fr 1fr;
-height:100vh;
-align-items:center;
-padding:100px;
-gap:60px;
+.admin-item{
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin-top:10px;
+background:#fff;
+border-radius:10px;
 }
 
-.product-hero{
-height:500px;
-background-size:cover;
-border-radius:20px;
-}
-
-.product-info h1{
-font-size:60px;
-font-family:'Cormorant Garamond', serif;
-}
-
-/* MODAL */
+/* CART */
 .modal{
 display:none;
 position:fixed;
@@ -138,20 +133,17 @@ background:white;
 padding:40px;
 border-radius:20px;
 width:380px;
-text-align:center;
 }
 
 .cart-item{
 display:flex;
 justify-content:space-between;
-margin:10px 0;
-font-size:14px;
+margin:8px 0;
 }
 
 /* MOBILE */
 @media(max-width:768px){
-.hero-content h1{font-size:48px;}
+.hero h1{font-size:40px;}
 .grid{grid-template-columns:1fr;}
-.product-page{grid-template-columns:1fr;}
 .nav{padding:15px 20px;}
 }
