@@ -1,100 +1,44 @@
-/* =========================
-   RESET + BASE
-========================= */
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 }
 
-html{
-scroll-behavior:smooth;
-}
-
 body{
 font-family:'Inter', sans-serif;
-background:#faf8f3;
-color:#1a1a1a;
-overflow-x:hidden;
-line-height:1.7;
-}
-
-section{
-padding:140px 10%;
-}
-
-/* =========================
-   TYPOGRAPHY
-========================= */
-h1,h2,h3{
-font-family:'Cormorant Garamond', serif;
-font-weight:500;
-letter-spacing:1px;
+background:#f7f3eb;
 color:#111;
+overflow-x:hidden;
 }
 
-h1{
-font-size:86px;
-line-height:1.1;
-}
-
-h2{
-font-size:52px;
-margin-bottom:20px;
-}
-
-p{
-font-size:18px;
-color:rgba(0,0,0,.65);
-}
-
-/* =========================
-   NAVBAR
-========================= */
+/* NAV */
 .navbar{
 position:fixed;
 top:0;
-left:0;
 width:100%;
 display:flex;
 justify-content:space-between;
-align-items:center;
-padding:22px 70px;
-background:rgba(255,255,255,0.65);
-backdrop-filter:blur(25px);
+padding:25px 80px;
+background:rgba(255,255,255,0.5);
+backdrop-filter:blur(20px);
 z-index:999;
-border-bottom:1px solid rgba(0,0,0,0.05);
 }
 
-.logo .small{
-font-size:10px;
-letter-spacing:3px;
-opacity:0.6;
-display:block;
-}
-
-.logo .big{
+.logo{
 font-family:'Cormorant Garamond', serif;
-font-size:28px;
-letter-spacing:6px;
+font-size:26px;
+letter-spacing:4px;
 }
 
 .menu a{
-margin-left:25px;
+margin-left:30px;
 text-decoration:none;
 color:#111;
-font-size:14px;
-letter-spacing:1px;
-transition:0.3s;
+font-size:13px;
+letter-spacing:2px;
 }
 
-.menu a:hover{
-opacity:0.5;
-}
-
-/* =========================
-   HERO
-========================= */
+/* HERO */
 .hero{
 height:100vh;
 position:relative;
@@ -107,228 +51,158 @@ overflow:hidden;
 
 .hero-video{
 position:absolute;
-top:0;
-left:0;
 width:100%;
 height:100%;
 object-fit:cover;
 }
 
-.overlay{
+.hero-overlay{
 position:absolute;
-top:0;
-left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.4);
+background:rgba(0,0,0,0.45);
 }
 
 .hero-content{
 position:relative;
-z-index:2;
+color:white;
 max-width:900px;
-padding:20px;
 }
 
 .hero-content h1{
-color:#fff;
-text-shadow:0 20px 60px rgba(0,0,0,.4);
-margin-bottom:20px;
+font-family:'Cormorant Garamond', serif;
+font-size:90px;
+line-height:1.1;
 }
 
 .hero-content p{
-color:rgba(255,255,255,.85);
-font-size:20px;
-margin-bottom:30px;
+margin-top:20px;
+font-size:18px;
+opacity:0.85;
 }
 
-/* =========================
-   BUTTON
-========================= */
 .btn{
 display:inline-block;
+margin-top:30px;
 padding:16px 40px;
-background:#111;
-color:#fff;
-text-decoration:none;
+background:white;
+color:black;
 border-radius:50px;
-transition:0.4s;
-letter-spacing:1px;
+text-decoration:none;
+transition:.4s;
 }
 
 .btn:hover{
 background:#c8a96a;
-transform:translateY(-3px);
+color:white;
 }
 
-/* =========================
-   STORY
-========================= */
-.story-container{
-display:flex;
-gap:100px;
+/* STORY */
+.story{
+padding:180px 10%;
+}
+
+.story-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:120px;
 align-items:center;
 }
 
-.story-text{
-flex:1;
+.story-text h2{
+font-size:60px;
+font-family:'Cormorant Garamond', serif;
 }
 
-.story-image{
-flex:1;
-}
-
-.story-image img{
-width:100%;
-border-radius:22px;
-box-shadow:0 30px 70px rgba(0,0,0,.08);
-}
-
-/* =========================
-   GRID (COLLECTIONS)
-========================= */
-.grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:40px;
-margin-top:60px;
-}
-
-.card{
-background:#fff;
-border-radius:22px;
-overflow:hidden;
-box-shadow:0 30px 70px rgba(0,0,0,.08);
-transition:0.5s;
-}
-
-.card:hover{
-transform:translateY(-15px);
-box-shadow:0 40px 90px rgba(0,0,0,.12);
-}
-
-.card img{
-width:100%;
-height:280px;
-object-fit:cover;
-}
-
-.card h3{
-padding:20px;
-font-size:22px;
-}
-
-/* =========================
-   WHY SECTION
-========================= */
-.why{
-background:#f3efe7;
-text-align:center;
-}
-
-.icons{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:25px;
-margin-top:60px;
-}
-
-.icons div{
-background:#fff;
-padding:25px;
-border-radius:18px;
-box-shadow:0 15px 40px rgba(0,0,0,.05);
-transition:0.3s;
-}
-
-.icons div:hover{
-transform:scale(1.05);
-}
-
-/* =========================
-   LIFESTYLE
-========================= */
-.lifestyle .grid img{
-width:100%;
-height:300px;
-object-fit:cover;
-border-radius:18px;
-}
-
-/* =========================
-   REVIEWS
-========================= */
-.review-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:30px;
-margin-top:60px;
-}
-
-.review{
-background:#fff;
-padding:30px;
-border-radius:18px;
-box-shadow:0 15px 40px rgba(0,0,0,.05);
-font-style:italic;
-}
-
-/* =========================
-   NEWSLETTER
-========================= */
-.newsletter{
-background:#111;
-color:#fff;
-text-align:center;
-}
-
-.newsletter input{
-padding:14px 20px;
-width:300px;
-border:none;
-border-radius:30px;
-outline:none;
-}
-
-.newsletter button{
-padding:14px 25px;
-border:none;
-border-radius:30px;
-background:#c8a96a;
-color:#fff;
-cursor:pointer;
-margin-left:10px;
-}
-
-/* =========================
-   CONTACT
-========================= */
-.contact{
-text-align:center;
-}
-
-/* =========================
-   FOOTER
-========================= */
-.footer{
-background:#0f0f0f;
-color:#fff;
-padding:80px 10%;
-}
-
-.footer-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:40px;
-margin-bottom:40px;
-}
-
-.footer p{
+.story-text p{
+margin-top:20px;
+line-height:1.8;
 opacity:0.7;
 }
 
-.copyright{
+.story-image{
+height:500px;
+background:url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80') center/cover;
+border-radius:20px;
+}
+
+/* BREAK */
+.break{
+height:60vh;
+background:url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=80') center/cover fixed;
+}
+
+/* COLLECTIONS */
+.collections{
+padding:160px 10%;
 text-align:center;
+}
+
+.collections h2{
+font-size:60px;
+font-family:'Cormorant Garamond', serif;
+}
+
+.lux-grid{
+margin-top:60px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.product{
+padding:60px;
+background:white;
+border-radius:20px;
+box-shadow:0 30px 70px rgba(0,0,0,0.06);
+font-size:18px;
+transition:.4s;
+}
+
+.product:hover{
+transform:translateY(-10px);
+}
+
+/* PHILOSOPHY */
+.philosophy{
+padding:160px 10%;
+background:#fff;
+text-align:center;
+}
+
+.philosophy-grid{
+margin-top:60px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:40px;
+}
+
+.philosophy-grid div{
+padding:40px;
+background:#f7f3eb;
+border-radius:20px;
+}
+
+/* FULL IMAGE */
+.full-image{
+height:70vh;
+background:url('https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?auto=format&fit=crop&w=1600&q=80') center/cover fixed;
+}
+
+/* FOOTER */
+.footer{
+padding:120px 10%;
+text-align:center;
+background:#111;
+color:white;
+}
+
+.footer h2{
+font-family:'Cormorant Garamond', serif;
+font-size:50px;
+}
+
+.copy{
 opacity:0.5;
-font-size:12px;
+margin-top:20px;
 }
