@@ -27,64 +27,64 @@
 
 <!-- HERO -->
 <header class="hero">
+  <video autoplay muted loop playsinline class="hero-video">
+    <source src="https://cdn.pixabay.com/video/2023/08/16/177245-855219293_large.mp4">
+  </video>
 
-<video autoplay muted loop playsinline class="hero-video">
-<source src="https://cdn.pixabay.com/video/2023/08/16/177245-855219293_large.mp4">
-</video>
+  <div class="hero-overlay"></div>
 
-<div class="hero-overlay"></div>
-
-<div class="hero-content">
-  <h1>Mediterranean Luxury</h1>
-  <p>Crafted in Türkiye for timeless living</p>
-  <a href="#shop" class="btn">Explore Collection</a>
-</div>
-
+  <div class="hero-content fade">
+    <h1>Mediterranean Luxury</h1>
+    <p>Crafted in Türkiye for timeless living</p>
+    <a href="#shop" class="btn">Discover Collection</a>
+  </div>
 </header>
 
-<!-- SHOP -->
-<section id="shop" class="shop">
+<!-- STORY -->
+<section id="story" class="story reveal">
 
-<h2>Best Sellers</h2>
+  <div class="story-text">
+    <h2>Quiet Luxury, Redefined</h2>
+    <p>
+      GELIBLOOM is a modern interpretation of Mediterranean textile heritage.
+      Designed for simplicity, softness and timeless elegance.
+    </p>
+  </div>
+
+  <div class="story-img"></div>
+
+</section>
+
+<!-- SHOP -->
+<section id="shop" class="shop reveal">
+
+<h2>Signature Collection</h2>
 
 <div class="grid">
 
   <div class="product">
-    <img src="https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800">
+    <div class="img img1" onclick="openGallery(0)"></div>
     <h3>Turkish Towel</h3>
     <p>$39</p>
-    <button onclick="openProduct('Turkish Towel',39,'Soft luxury Turkish cotton towel')">View</button>
-    <button onclick="addToCart('Turkish Towel',39)">Add</button>
+    <button onclick="addToCart('Turkish Towel',39)">Add to Cart</button>
   </div>
 
   <div class="product">
-    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800">
+    <div class="img img2" onclick="openGallery(1)"></div>
     <h3>Beach Set</h3>
     <p>$59</p>
-    <button onclick="openProduct('Beach Set',59,'Mediterranean beach essentials')">View</button>
-    <button onclick="addToCart('Beach Set',59)">Add</button>
+    <button onclick="addToCart('Beach Set',59)">Add to Cart</button>
   </div>
 
   <div class="product">
-    <img src="https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800">
+    <div class="img img3" onclick="openGallery(2)"></div>
     <h3>Spa Robe</h3>
     <p>$89</p>
-    <button onclick="openProduct('Spa Robe',89,'Luxury spa hotel robe experience')">View</button>
-    <button onclick="addToCart('Spa Robe',89)">Add</button>
+    <button onclick="addToCart('Spa Robe',89)">Add to Cart</button>
   </div>
 
 </div>
 
-</section>
-
-<!-- STORY -->
-<section id="story" class="story">
-  <div class="story-text">
-    <h2>Quiet Mediterranean Luxury</h2>
-    <p>GELIBLOOM is designed for calm living, natural textures and timeless elegance.</p>
-  </div>
-
-  <div class="story-img"></div>
 </section>
 
 <!-- CART -->
@@ -93,29 +93,33 @@
     <h2>Your Cart</h2>
 
     <div id="cartItems"></div>
-
     <h3>Total: $<span id="total">0</span></h3>
 
-    <button onclick="openCheckout()">Checkout</button>
+    <button onclick="checkout()">Checkout</button>
     <button onclick="closeCart()">Close</button>
   </div>
 </div>
 
-<!-- PRODUCT -->
-<div id="product" class="modal">
-  <div class="box">
-    <h2 id="pTitle"></h2>
-    <p id="pDesc"></p>
-    <h3>$<span id="pPrice"></span></h3>
+<!-- GALLERY MODAL -->
+<div id="gallery" class="modal">
+  <div class="box large">
 
-    <button onclick="addFromProduct()">Add to Cart</button>
-    <button onclick="closeProduct()">Close</button>
+    <span class="close" onclick="closeGallery()">×</span>
+
+    <div id="galleryImg" class="gallery-img"></div>
+
+    <div class="controls">
+      <button onclick="prev()">Prev</button>
+      <button onclick="next()">Next</button>
+    </div>
+
   </div>
 </div>
 
 <!-- CHECKOUT -->
 <div id="checkout" class="modal">
   <div class="box">
+
     <h2>Secure Checkout</h2>
 
     <input placeholder="Full Name">
@@ -124,18 +128,26 @@
 
     <button>Pay Now</button>
     <button onclick="closeCheckout()">Back</button>
+
   </div>
 </div>
 
 <script>
-let cart = [];
-let total = 0;
-let selected = null;
+let cart=[];
+let total=0;
+
+let images=[
+"https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800",
+"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800",
+"https://images.unsplash.com/photo-1501117716987-c8e1ecb2101e?w=800"
+];
+
+let current=0;
 
 function addToCart(name,price){
 cart.push({name,price});
-total += price;
-document.getElementById("cartCount").innerText = cart.length;
+total+=price;
+document.getElementById("cartCount").innerText=cart.length;
 }
 
 function openCart(){
@@ -145,8 +157,8 @@ document.getElementById("cart").style.display="flex";
 
 function renderCart(){
 let html="";
-cart.forEach((item,i)=>{
-html += `<p>${item.name} - $${item.price}</p>`;
+cart.forEach(i=>{
+html+=`<p>${i.name} - $${i.price}</p>`;
 });
 document.getElementById("cartItems").innerHTML=html;
 document.getElementById("total").innerText=total;
@@ -156,24 +168,33 @@ function closeCart(){
 document.getElementById("cart").style.display="none";
 }
 
-function openProduct(t,p,d){
-selected={t,p,d};
-document.getElementById("pTitle").innerText=t;
-document.getElementById("pPrice").innerText=p;
-document.getElementById("pDesc").innerText=d;
-document.getElementById("product").style.display="flex";
+/* GALLERY */
+function openGallery(i){
+current=i;
+document.getElementById("gallery").style.display="flex";
+update();
 }
 
-function addFromProduct(){
-addToCart(selected.t,selected.p);
-closeProduct();
+function update(){
+document.getElementById("galleryImg").style.backgroundImage=`url(${images[current]})`;
 }
 
-function closeProduct(){
-document.getElementById("product").style.display="none";
+function next(){
+current=(current+1)%images.length;
+update();
 }
 
-function openCheckout(){
+function prev(){
+current=(current-1+images.length)%images.length;
+update();
+}
+
+function closeGallery(){
+document.getElementById("gallery").style.display="none";
+}
+
+/* CHECKOUT */
+function checkout(){
 document.getElementById("checkout").style.display="flex";
 document.getElementById("cart").style.display="none";
 }
@@ -181,6 +202,16 @@ document.getElementById("cart").style.display="none";
 function closeCheckout(){
 document.getElementById("checkout").style.display="none";
 }
+
+/* SCROLL REVEAL */
+window.addEventListener("scroll",()=>{
+document.querySelectorAll(".reveal").forEach(el=>{
+let top=el.getBoundingClientRect().top;
+if(top<700){
+el.classList.add("active");
+}
+});
+});
 </script>
 
 </body>
