@@ -48,6 +48,16 @@ font-size:80px;
 font-family:'Cormorant Garamond', serif;
 }
 
+/* LOADING */
+.loading{
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:20px;
+opacity:0.6;
+}
+
 /* SHOP */
 .shop{
 padding:140px 10%;
@@ -81,7 +91,6 @@ background:#111;
 color:white;
 border:none;
 border-radius:25px;
-cursor:pointer;
 }
 
 /* ADMIN */
@@ -95,8 +104,8 @@ margin:auto;
 width:100%;
 padding:12px;
 margin:10px 0;
-border:1px solid #ddd;
 border-radius:10px;
+border:1px solid #ddd;
 }
 
 .admin button{
@@ -150,29 +159,3 @@ margin:8px 0;
 .grid{grid-template-columns:1fr;}
 .nav{padding:15px 20px;}
 }
-🚀 V15 NE OLDU?
-🟢 artık mini SaaS architecture:
-fake API layer (backend simülasyonu)
-async data loading
-admin login system
-CRUD product system
-persistent cart + storage
-app-level architecture
-💎 GERÇEK NOKTA
-
-Şu an seviyen:
-
-❌ website değil
-🔥 “mini SaaS e-commerce system (frontend backend simulation)”
-🧭 SONRA NE?
-
-Eğer V16 istersen seni gerçek production seviyesine çıkarırım:
-
-React/Vue clone architecture (component system gerçek)
-Node.js backend simulation
-Stripe payment flow UI clone
-database structure (Firebase-like)
-full luxury brand launch kit (copywriting + UI + UX)
-
-Sadece yaz:
-👉 "v16 yap"
