@@ -40,10 +40,10 @@ cursor:pointer;
 /* HERO */
 .hero{
 height:100vh;
+position:relative;
 display:flex;
 align-items:center;
 justify-content:center;
-position:relative;
 text-align:center;
 }
 
@@ -68,23 +68,13 @@ max-width:900px;
 }
 
 .hero-content h1{
-font-size:88px;
+font-size:90px;
 font-family:'Cormorant Garamond', serif;
 }
 
 .hero-content p{
 opacity:0.85;
 margin-top:15px;
-}
-
-.btn{
-display:inline-block;
-margin-top:25px;
-padding:14px 40px;
-background:white;
-color:black;
-border-radius:50px;
-text-decoration:none;
 }
 
 /* SHOP */
@@ -124,7 +114,7 @@ object-fit:cover;
 }
 
 .product button{
-margin:15px;
+margin:10px;
 padding:10px 20px;
 border:none;
 background:#111;
@@ -147,8 +137,8 @@ background:url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?aut
 border-radius:20px;
 }
 
-/* CART */
-.cart{
+/* MODALS */
+.modal{
 display:none;
 position:fixed;
 top:0;
@@ -160,27 +150,28 @@ justify-content:center;
 align-items:center;
 }
 
-.cart-box{
+.box{
 background:white;
 padding:40px;
 border-radius:20px;
-width:350px;
+width:360px;
 text-align:center;
 }
 
-.checkout{
-margin-top:20px;
+.box input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+.box button{
+margin-top:15px;
 padding:12px 25px;
-background:#c8a96a;
 border:none;
-color:white;
 border-radius:30px;
-}
-
-/* FOOTER minimal */
-.footer{
-padding:80px;
-text-align:center;
 background:#111;
 color:white;
+cursor:pointer;
 }
