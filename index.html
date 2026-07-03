@@ -16,6 +16,7 @@
 <!-- NAV -->
 <nav class="nav">
   <div class="logo">GELIBLOOM</div>
+
   <div class="links">
     <a href="#shop">Shop</a>
     <a href="#story">Story</a>
@@ -23,39 +24,8 @@
   </div>
 </nav>
 
-<!-- HERO -->
-<header class="hero">
-  <video autoplay muted loop playsinline class="hero-video">
-    <source src="https://cdn.pixabay.com/video/2023/08/16/177245-855219293_large.mp4">
-  </video>
-
-  <div class="hero-overlay"></div>
-
-  <div class="hero-content">
-    <h1>Mediterranean Luxury</h1>
-    <p>Crafted in Türkiye for timeless living</p>
-    <a href="#shop" class="btn">Explore</a>
-  </div>
-</header>
-
-<!-- SHOP (rendered by JS) -->
-<section id="shop" class="shop">
-  <h2>Signature Collection</h2>
-  <div id="grid" class="grid"></div>
-</section>
-
-<!-- STORY -->
-<section id="story" class="story">
-  <div>
-    <h2>Quiet Luxury</h2>
-    <p>
-      GELIBLOOM is a modern interpretation of Mediterranean craftsmanship.
-      Designed for timeless simplicity and texture.
-    </p>
-  </div>
-
-  <div class="story-img"></div>
-</section>
+<!-- ROUTE VIEW (NEW CORE IDEA) -->
+<main id="app"></main>
 
 <!-- CART -->
 <div id="cart" class="modal">
@@ -90,7 +60,15 @@
 
 <script>
 /* =========================
-   PRODUCT DATABASE (NEW CORE)
+   STATE (mini framework core)
+========================= */
+
+let state = {
+cart: JSON.parse(localStorage.getItem("cart")) || []
+};
+
+/* =========================
+   PRODUCT DATABASE
 ========================= */
 
 const products = [
@@ -99,7 +77,7 @@ id:1,
 name:"Turkish Towel",
 price:39,
 img:"https://images.unsplash.com/photo-1520975922284-9c9b4b3b8a3b?w=800",
-desc:"Ultra-soft Turkish cotton towel. Lightweight luxury."
+desc:"Ultra-soft Turkish cotton towel."
 },
 {
 id:2,
@@ -118,72 +96,131 @@ desc:"Hotel-grade spa comfort robe."
 ];
 
 /* =========================
-   CART ENGINE (UPGRADED)
+   ROUTER (NEW)
 ========================= */
 
-let cart = [];
+function router(){
+const hash = location.hash.replace("#","");
+
+if(hash.startsWith("product/")){
+const id = parseInt(hash.split("/")[1]);
+return renderProductPage(id);
+}
+
+return renderHome();
+}
+
+window.addEventListener("hashchange", router);
+
+/* =========================
+   COMPONENTS
+========================= */
+
+function renderHome(){
+document.getElementById("app").innerHTML = `
+<section class="hero">
+  <div class="hero-content">
+    <h1>Mediterranean Luxury</h1>
+    <p>Crafted in Türkiye for timeless living</p>
+    <a href="#shop" class="btn">Explore</a>
+  </div>
+</section>
+
+<section class="shop">
+  <h2>Signature Collection</h2>
+
+  <div class="grid">
+    ${products.map(p => `
+      <div class="product">
+        <div class="img" style="background-image:url('${p.img}')"></div>
+        <h3>${p.name}</h3>
+        <p>$${p.price}</p>
+
+        <button onclick="location.hash='product/${p.id}'">View</button>
+        <button onclick="addToCart(${p.id})">Add</button>
+      </div>
+    `).join("")}
+  </div>
+</section>
+`;
+}
+
+/* PRODUCT PAGE (NEW MAJOR FEATURE) */
+
+function renderProductPage(id){
+const p = products.find(x=>x.id===id);
+
+document.getElementById("app").innerHTML = `
+<section class="product-page">
+
+  <div class="product-hero" style="background-image:url('${p.img}')"></div>
+
+  <div class="product-info">
+    <h1>${p.name}</h1>
+    <p>${p.desc}</p>
+    <h2>$${p.price}</h2>
+
+    <button onclick="addToCart(${p.id})">Add to Cart</button>
+    <button onclick="location.hash=''">Back</button>
+  </div>
+
+</section>
+`;
+}
+
+/* =========================
+   CART SYSTEM (persisted)
+========================= */
 
 function addToCart(id){
 
 const product = products.find(p => p.id === id);
-const existing = cart.find(i => i.id === id);
+const existing = state.cart.find(i => i.id === id);
 
 if(existing){
 existing.qty++;
 } else {
-cart.push({...product, qty:1});
+state.cart.push({...product, qty:1});
 }
 
-renderCart();
+saveCart();
+updateCartUI();
 }
 
-/* =========================
-   RENDER PRODUCTS (NEW)
-========================= */
-
-function renderProducts(){
-const grid = document.getElementById("grid");
-
-grid.innerHTML = products.map(p => `
-  <div class="product">
-    <div class="img" style="background-image:url('${p.img}')"></div>
-    <h3>${p.name}</h3>
-    <p>$${p.price}</p>
-    <button onclick="addToCart(${p.id})">Add to Cart</button>
-  </div>
-`).join("");
+function saveCart(){
+localStorage.setItem("cart", JSON.stringify(state.cart));
 }
 
 /* =========================
-   CART RENDER
+   CART UI
 ========================= */
 
-function renderCart(){
+function updateCartUI(){
 
+let count = 0;
 let total = 0;
 
-const html = cart.map((item, i) => {
+let html = "";
+
+state.cart.forEach((item,i)=>{
+count += item.qty;
 total += item.price * item.qty;
 
-return `
+html += `
 <div class="cart-item">
   <span>${item.name}</span>
-  <span>$${item.price} x ${item.qty}</span>
+  <span>${item.qty} x $${item.price}</span>
 </div>
 `;
-}).join("");
+});
 
 document.getElementById("cartItems").innerHTML = html;
+document.getElementById("cartCount").innerText = count;
 document.getElementById("total").innerText = total;
-document.getElementById("cartCount").innerText = cart.reduce((a,b)=>a+b.qty,0);
 }
 
-/* =========================
-   UI ACTIONS
-========================= */
-
 function openCart(){
-renderCart();
+updateCartUI();
 document.getElementById("cart").style.display="flex";
 }
 
@@ -201,7 +238,8 @@ document.getElementById("checkout").style.display="none";
 }
 
 /* INIT */
-renderProducts();
+router();
+updateCartUI();
 </script>
 
 </body>
